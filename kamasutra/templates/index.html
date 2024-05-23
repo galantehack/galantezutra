@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="card">
+        <a href="#menu" id="toggle"><span></span></a>
+
+<div id="menu">
+  <ul>
+   <a ><img src="{{ url_for('static', filename='images/labios.png') }}" alt="love" class="labios"></a> 
+    <li><a href="/">INICIO -</a></li>
+    <li><a href="#about">SOBRE MI -</a></li>
+    <li><a href="#contact">CONTACTANOS -</a></li>
+    <li><a href="#contact">BLOG</a></li>
+  </ul>
+ 
+</div>
+        <h1 class="titulo">GALANTESUTRA</h1>
+        <img id="imagen" src="{{ image_path }}" alt="Imagen aleatoria">
+        <p>{{ description }}</p>
+        <img src="{{ url_for('static', filename='images/love-you-1435257_640-removebg-preview.png') }}" alt="love" class="love">
+        <button onclick="detenerActualizacion()" class="myButton2">Detener cambio</button>
+        <button onclick="cambiarImagenManualmente()" class="myButton">Cambiar postura</button>
+       
+    </div>
+    
+    <script>
+        let intervalId; // Variable para almacenar el ID del intervalo
+
+        function cambiarImagenAutomaticamente() {
+            fetch('/nueva_imagen')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('imagen').src = data.image_path;
+                    document.querySelector('p').textContent = data.description;
+                })
+                .catch(error => console.error('Error al obtener la nueva imagen:', error));
+        }
+
+        function detenerActualizacion() {
+            clearInterval(intervalId); // Detiene la actualización automática
+        }
+
+        function cambiarImagenManualmente() {
+            detenerActualizacion(); // Detiene la actualización automática si está activa
+            cambiarImagenAutomaticamente(); // Carga una nueva imagen manualmente
+        }
+
+        // Ejecuta la función inicialmente
+        intervalId = setInterval(cambiarImagenAutomaticamente, 120000); // Actualiza cada 2 minutos
+    </script>
+</body>
+</html>
